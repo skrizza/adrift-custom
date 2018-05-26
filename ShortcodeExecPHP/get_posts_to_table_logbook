@@ -1,0 +1,65 @@
+//
+// get_posts_to_table_logbook
+//   version: 1.0.0
+//   code: s k r a t c h
+//   used-in:
+//     - page: log-book
+//
+global $post; // required
+
+function compareByLogDateString($a, $b)
+// Using input as an array of style :
+//  arr[27]['Log Date'] = '23-JUN-2012'
+//  arr[43]['Log Date'] = '19-DEC-2011'
+//
+// Return negative if the log date of $b is > that of $a,
+// Return positive if the log date of $a is < that of $b,
+// Return 0 if log dates are equal.
+//
+// This is used by the usort() function, to order from newest to oldest.
+    {
+        $t1 = strtotime($a['Log Date']);
+        $t2 = strtotime($b['Log Date']);
+        return $t2 - $t1;
+    }    
+    
+// Get Log data from all posts to an array and sort by date
+
+$myPostQuery = array('nopaging' => true, 'supress_filters' => false, 'category_name' => "Sailor's Log"); // only include Sailor's Log posts
+$mySailorsLogPosts = get_posts($myPostQuery);
+$myCounter = 0;
+foreach($mySailorsLogPosts as $post) : setup_postdata($post);
+	$myLogData[$post->ID]['Log Date'] = get_post_meta($post->ID, $key = "Log Date", $single = true);
+	$myLogData[$post->ID]['Link'] = get_permalink($post->ID);
+	$myLogData[$post->ID]['Title'] = get_the_title($post->ID);
+	$myLogData[$post->ID]['Boat'] = get_post_meta($post->ID, $key = "Boat", $single = true);
+	$myLogData[$post->ID]['Crew Position'] = get_post_meta($post->ID, $key = "Crew Position", $single = true);	
+	$myLogData[$post->ID]['Location'] = get_post_meta($post->ID, $key = "Location", $single = true);
+	//print "Post $post->ID: [".  $myLogData[$post->ID]['Log Date'] . "] [". strtotime($myLogData[$post->ID]['Log Date']) . "]<br/>\n";
+endforeach;
+
+// Sort the Log Entries by date, from newest to oldest.
+uasort($myLogData, 'compareByLogDateString');
+
+// Print Table header
+print "<table id=\"logbook\" class=\"datatable\">\n";
+print "<tr>\n";
+print "<th>Log Date</td>\n";
+print "<th>Log Entry</td>\n";
+print "<th>Boat</td>\n";
+print "<th>Crew Position</td>\n";
+print "<th>Location</td>\n";
+print "</tr>\n";
+
+// Print one new row for each Log Entry
+foreach($myLogData as $myLogEntry) : 
+	print "<tr>\n";
+	print "<td>" . $myLogEntry['Log Date'] . "</td>\n";
+	print "<td><a href=\"" . $myLogEntry['Link'] . "\">" . $myLogEntry['Title'] . "</a></td>\n";
+	print "<td>" . $myLogEntry['Boat'] . "</td>\n";
+	print "<td>" . $myLogEntry['Crew Position'] ."</td>\n";
+	print "<td>" . $myLogEntry['Location'] ."</td>\n";
+	print "</tr>\n";
+endforeach;
+
+print "</table>\n";
