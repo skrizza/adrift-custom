@@ -1,0 +1,54 @@
+/*
+ * CSS For Heidi Theme
+ *   version: 1.0.0
+ *   code: s k r a t c h
+ *   used-in:
+ *     - theme: Heidi
+ *
+ */
+.datatable  {
+	border-width: 1px;
+    border-style: solid;
+    border-color: #c57768;
+    border-spacing: 0px;
+    border-collapse: collapse;	
+	padding: 2px
+}
+
+.datatable th, .datatable td {
+	border-width: 1px;
+    border-style: solid;
+    border-color: #c57768;
+    padding: 2px
+}
+
+.datatable th {
+    font-weight: bold;
+    color: #9d4d3c
+}
+  
+/*
+ * CSS For Gravel Theme
+ * (no longer used)
+ *
+.datatable  {
+	border-width: 1px;
+    border-style: solid;
+    border-color: #a32c28;
+    border-spacing: 0px;
+    border-collapse: collapse;	
+	padding: 2px
+}
+
+.datatable th, .datatable td {
+	border-width: 1px;
+    border-style: solid;
+    border-color: #a32c28;
+    padding: 2px
+}
+
+.datatable th {
+    font-weight: bold;
+    color: #a32c28
+}
+*/
